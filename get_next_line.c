@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:19:29 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/08/22 15:34:38 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/08/26 15:54:06 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,39 @@
 
 char	*get_next_line(int fd)
 {
-	char			*buf;
-	size_t			line_len;
-	static size_t	current = 0;
-	char			*str;
+	static char	*buf;
+	char		*str;
 
-	line_len = 0;
-	while (buf != '\n')
+// safety
+	if (read(fd, 0, 0) < 0 || !fd || BUFFER_SIZE <= 0)
+		return (NULL);
+// malloc the buffer
+	buf = ft_gnl_calloc(BUFFER_SIZE + 1, sizeof(char));
+
+	while (read(fd, buf, 1) > 0)
 	{
-		// printf("\nbuff contains: %c\nline_len = %zu", buf, line_len);
-		// printf("\ncurrent = %zu\n\n", current);
-		read(fd, buf, 1);
-		while (buf != '\n')
-		{
-			line_len ++;
-			current ++;
-		}
+
 	}
-	str = ft_strjoin(str, buf);
 	if (!str)
 		return (free(str), NULL);
 	return (str);
 }
 
-// read 1 line at a time
-// loop until \n
-// calloc concat
-
 int	main(int argc, char **argv)
 {
-	int	fd;
+	int		fd;
+	char	*str;
 
+// open 1 file at a time to test
 	if (argc != 2)
 		return (0);
 	fd = open(argv[1], O_RDONLY);
-	printf("%s", get_next_line(fd));
+// calls gnl and prints return untill error or EOF
+	while (str != NULL)
+	{
+		str = get_next_line(fd);
+		printf("%s", str);
+	}
 	close(fd);
 	return (0);
 }
