@@ -6,13 +6,13 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:34:57 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/08/22 14:13:58 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/09/23 14:52:20 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_gnl_calloc(size_t count, size_t size)
+void	*ft_calloc(size_t count, size_t size)
 {
 	void	*res;
 	size_t	len;
@@ -69,12 +69,28 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	count = len_s1 + len_s2 + 1;
-	res = ft_gnl_calloc(count, sizeof(char));
+	res = ft_calloc(count, sizeof(char));
 	if (res)
 	{
 		ft_memcpy(res, s1, len_s1);
 		ft_memcpy(res + len_s1, s2, len_s2);
 		return (res);
 	}
+	return (NULL);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == (char)c)
+			return ((char *)(s + i));
+		i++;
+	}
+	if (s[i] == (char)c)
+		return ((char *)(s + i));
 	return (NULL);
 }
