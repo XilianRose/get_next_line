@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:27:46 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/09/23 15:20:18 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/11 14:52:06 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE
+#  define BUFFER_SIZE 1024
 # endif
 
 char	*get_next_line(int fd);
+
 void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *s);
+void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strchr(const char *s, int c);
 
