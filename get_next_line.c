@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:19:29 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/11 15:32:43 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/14 15:29:19 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@
 // reads unless buffer contains \n and till EOF
 char	*ft_read_file(int fd, char *buf)
 {
-	size_t	bytes;
+	int		bytes;
 	char	*temp;
 
 	bytes = BUFFER_SIZE;
+	temp = "start";
 	while (ft_strchr(temp, '\n') == NULL && bytes == BUFFER_SIZE)
 	{
-		bytes = read(fd, temp, BUFFER_SIZE);
+		bytes = read(fd, buf, BUFFER_SIZE);
 		temp[bytes] = '\0';
 		if (bytes > 0)
 			buf = ft_strjoin(buf, temp);
