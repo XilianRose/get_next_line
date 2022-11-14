@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:19:29 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/11 15:32:43 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/14 11:06:10 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ char	*ft_read_file(int fd, char *buf)
 	size_t	bytes;
 	char	*temp;
 
+	temp = NULL;
 	bytes = BUFFER_SIZE;
 	while (ft_strchr(temp, '\n') == NULL && bytes == BUFFER_SIZE)
 	{
