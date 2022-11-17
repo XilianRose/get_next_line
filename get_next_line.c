@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:19:29 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/17 12:12:34 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/17 15:47:46 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,26 @@ char	*ft_find_line(char *buffer)
 	return (line);
 }
 
+char	*ft_read_check(char *buffer, char *read_char, int bytes)
+{
+	char		*temp;
+
+	if (bytes < 0)
+	{
+		if (buffer)
+			free(buffer);
+		return (NULL);
+	}
+	if (bytes > 0)
+	{
+		temp = buffer;
+		if (buffer)
+			free(buffer);
+		buffer = ft_strjoin_gnl(temp, read_char);
+	}
+	return (buffer);
+}
+
 /*	this is the function that actually reads the file.
 		the variable "bytes" is set to buffer_size to start off with so
 
@@ -44,26 +64,15 @@ char	*ft_read_file(int fd, char *buffer)
 {
 	int			bytes;
 	char		*read_char;
-	char		*temp;
 
 	bytes = BUFFER_SIZE;
-	read_char = NULL;
+	read_char = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	if (!read_char)
+		return (NULL);
 	while (ft_strchr(read_char, '\n') == NULL && bytes == BUFFER_SIZE)
 	{
 		bytes = read(fd, read_char, BUFFER_SIZE);
-		if (bytes < 0)
-		{
-			if (buffer)
-				free(buffer);
-			return (NULL);
-		}
-		if (bytes > 0)
-		{
-			temp = buffer;
-			if (buffer)
-				free(buffer);
-			buffer = ft_strjoin(temp, read_char);
-		}
+		buffer = ft_read_check(buffer, read_char, bytes);
 	}
 	return (buffer);
 }
@@ -84,9 +93,9 @@ char	*get_next_line(int fd)
 	line = NULL;
 	if (read(fd, 0, 0) < 0 || fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (ft_strchr(buffer, '\n') == NULL)
+	if (buffer == NULL)
 		buffer = ft_read_file(fd, buffer);
-	else
+	if (buffer)
 		line = ft_find_line(buffer);
 	return (line);
 }

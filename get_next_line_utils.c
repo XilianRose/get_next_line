@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:34:57 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/09/23 14:52:20 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/17 15:43:30 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,13 @@ void	*ft_calloc(size_t count, size_t size)
 	return (res);
 }
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlen_gnl(const char *s)
 {
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 	{
 		i++;
@@ -59,15 +61,15 @@ void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n)
 	return (ret);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin_gnl(char const *s1, char const *s2)
 {
 	char	*res;
 	size_t	len_s1;
 	size_t	len_s2;
 	size_t	count;
 
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
+	len_s1 = ft_strlen_gnl(s1);
+	len_s2 = ft_strlen_gnl(s2);
 	count = len_s1 + len_s2 + 1;
 	res = ft_calloc(count, sizeof(char));
 	if (res)

@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:27:46 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/17 11:55:53 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/17 15:42:39 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ char	*ft_read_file(int fd, char *buffer);
 char	*ft_find_line(char *buffer);
 
 void	*ft_calloc(size_t count, size_t size);
-size_t	ft_strlen(const char *s);
+size_t	ft_strlen_gnl(const char *s);
 void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin_gnl(char const *s1, char const *s2);
 char	*ft_strchr(const char *s, int c);
 
 #endif
