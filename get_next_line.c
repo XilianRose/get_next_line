@@ -6,13 +6,13 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:19:29 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/18 11:21:55 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/18 12:31:11 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-// #include <fcntl.h>
-// #include <stdio.h>
+#include <fcntl.h>
+#include <stdio.h>
 
 char	*ft_find_line(char *buffer)
 {
@@ -69,6 +69,8 @@ char	*ft_read_file(int fd, char *buffer)
 	while (ft_strchr(read_char, '\n') == NULL && bytes == BUFFER_SIZE)
 	{
 		bytes = read(fd, read_char, BUFFER_SIZE);
+		if (bytes == 0)
+			break ;
 		buffer = ft_read_check(buffer, read_char, bytes);
 	}
 	return (buffer);
@@ -88,16 +90,16 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	line = NULL;
-	if (read(fd, 0, 0) < 0 || fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (buffer == NULL)
 		buffer = ft_read_file(fd, buffer);
 	if (buffer)
 	{
-		line = ft_find_line(buffer);
-		buffer = (buffer + ft_strlen_gnl(line));
 		if (buffer[0] == '\0')
 			return (NULL);
+		line = ft_find_line(buffer);
+		buffer = (buffer + ft_strlen_gnl(line));
 	}
 	return (line);
 }
@@ -109,27 +111,27 @@ char	*get_next_line(int fd)
 //		after this it calls on the get_next_line function with the given fd
 //		in a loop, printing it each time, untill error or EOF.
 
-// int	main(int argc, char **argv)
-// {
-// 	int		fd;
-// 	char	*line = "start";
+int	main(int argc, char **argv)
+{
+	int		fd;
+	char	*line = "start";
 
-// 	if (argc != 2)
-// 	{
-// 		printf("\nplease enter one filename as argument\n\n");
-// 		return (0);
-// 	}
-// 	fd = open(argv[1], O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 		printf("\nencountered problem opening file\nfd = %i\n\n", fd);
-// 		return (fd);
-// 	}
-// 	while (line != NULL)
-// 	{
-// 		line = get_next_line(fd);
-// 		printf("%s", line);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }
+	if (argc != 2)
+	{
+		printf("\nplease enter one filename as argument\n\n");
+		return (0);
+	}
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+	{
+		printf("\nencountered problem opening file\nfd = %i\n\n", fd);
+		return (fd);
+	}
+	while (line != NULL)
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+	}
+	close(fd);
+	return (0);
+}
