@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:34:57 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/17 15:43:30 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/18 11:24:07 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ size_t	ft_strlen_gnl(const char *s)
 	return (i);
 }
 
-void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	void	*ret;
 
