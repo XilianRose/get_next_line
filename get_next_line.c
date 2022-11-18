@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:19:29 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/18 12:31:11 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/18 16:08:42 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ char	*ft_find_line(char *buffer)
 	size_t	i;
 
 	i = 0;
-	end = ft_strchr(buffer, '\n') + 1;
+	end = ft_strchr_gnl(buffer, '\n');
 	if (end == NULL)
-		end = ft_strchr(buffer, '\0');
+		end = ft_strchr_gnl(buffer, '\0');
+	else
+		end = end + 1;
 	while (&buffer[i] != &end[0])
 		i++;
 	line = ft_calloc(i, sizeof(char));
@@ -46,9 +48,9 @@ char	*ft_read_check(char *buffer, char *read_char, int bytes)
 	if (bytes > 0)
 	{
 		temp = buffer;
-		if (buffer)
-			free(buffer);
 		buffer = ft_strjoin_gnl(temp, read_char);
+		if (temp)
+			free(temp);
 	}
 	return (buffer);
 }
@@ -63,15 +65,17 @@ char	*ft_read_file(int fd, char *buffer)
 	char		*read_char;
 
 	bytes = BUFFER_SIZE;
-	read_char = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	if (!read_char)
-		return (NULL);
-	while (ft_strchr(read_char, '\n') == NULL && bytes == BUFFER_SIZE)
+	read_char = NULL;
+	while (ft_strchr_gnl(buffer, '\n') == NULL && bytes == BUFFER_SIZE)
 	{
+		read_char = ft_calloc(bytes + 1, sizeof(char));
+		if (!read_char)
+			return (NULL);
 		bytes = read(fd, read_char, BUFFER_SIZE);
 		if (bytes == 0)
-			break ;
+			return (free(read_char), buffer);
 		buffer = ft_read_check(buffer, read_char, bytes);
+		free(read_char);
 	}
 	return (buffer);
 }
@@ -92,7 +96,7 @@ char	*get_next_line(int fd)
 	line = NULL;
 	if (fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (buffer == NULL)
+	if (ft_strchr_gnl(buffer, '\n') == NULL)
 		buffer = ft_read_file(fd, buffer);
 	if (buffer)
 	{

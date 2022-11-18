@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:27:46 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/18 11:25:27 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/18 15:39:00 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen_gnl(const char *s);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strjoin_gnl(char const *s1, char const *s2);
-char	*ft_strchr(const char *s, int c);
+char	*ft_strchr_gnl(const char *s, int c);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:34:57 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/18 11:24:07 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/18 15:38:54 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,13 @@ char	*ft_strjoin_gnl(char const *s1, char const *s2)
 	return (NULL);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr_gnl(const char *s, int c)
 {
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == (char)c)
