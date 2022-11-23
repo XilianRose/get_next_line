@@ -6,13 +6,21 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:19:29 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/18 16:08:42 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/23 15:57:05 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
 #include <stdio.h>
+
+void	ft_free_str(char **str)
+{
+	if (str != NULL && *str != '\0' && *str[0] != '\0')
+	{
+		free(*str);
+		*str = NULL;
+	}
+}
 
 char	*ft_find_line(char *buffer)
 {
@@ -28,31 +36,28 @@ char	*ft_find_line(char *buffer)
 		end = end + 1;
 	while (&buffer[i] != &end[0])
 		i++;
-	line = ft_calloc(i, sizeof(char));
+	line = ft_calloc(i + 1, sizeof(char));
 	if (!line)
 		return (NULL);
 	ft_memcpy(line, buffer, i);
 	return (line);
 }
 
-char	*ft_read_check(char *buffer, char *read_char, int bytes)
+char	*ft_read_check(char **buffer, char *read_char, int bytes)
 {
 	char		*temp;
 
+	temp = NULL;
 	if (bytes < 0)
-	{
-		if (buffer)
-			free(buffer);
-		return (NULL);
-	}
+		return (ft_free_str(buffer), NULL);
+
 	if (bytes > 0)
 	{
-		temp = buffer;
-		buffer = ft_strjoin_gnl(temp, read_char);
-		if (temp)
-			free(temp);
+		temp = *buffer;
+		*buffer = ft_strjoin_gnl(temp, read_char);
+		ft_free_str(&temp);
 	}
-	return (buffer);
+	return (*buffer);
 }
 
 /*	this is the function that actually reads the file.
@@ -73,9 +78,9 @@ char	*ft_read_file(int fd, char *buffer)
 			return (NULL);
 		bytes = read(fd, read_char, BUFFER_SIZE);
 		if (bytes == 0)
-			return (free(read_char), buffer);
-		buffer = ft_read_check(buffer, read_char, bytes);
-		free(read_char);
+			return (ft_free_str(&read_char), buffer);
+		buffer = ft_read_check(&buffer, read_char, bytes);
+		ft_free_str(&read_char);
 	}
 	return (buffer);
 }
@@ -103,6 +108,7 @@ char	*get_next_line(int fd)
 		if (buffer[0] == '\0')
 			return (NULL);
 		line = ft_find_line(buffer);
+		//memmove ipv buffer pointer verplaatsen
 		buffer = (buffer + ft_strlen_gnl(line));
 	}
 	return (line);
@@ -114,6 +120,9 @@ char	*get_next_line(int fd)
 //			- error with opening file
 //		after this it calls on the get_next_line function with the given fd
 //		in a loop, printing it each time, untill error or EOF.
+
+#include <fcntl.h>
+#include <stdio.h>
 
 int	main(int argc, char **argv)
 {
@@ -131,11 +140,19 @@ int	main(int argc, char **argv)
 		printf("\nencountered problem opening file\nfd = %i\n\n", fd);
 		return (fd);
 	}
-	while (line != NULL)
-	{
-		line = get_next_line(fd);
-		printf("%s", line);
-	}
+	line = get_next_line(fd);
+	free(line);
+	line = NULL;
+	line = get_next_line(fd);
+	free(line);
+	line = NULL;
+	// while ((line = get_next_line(fd)) > 0)
+	// {
+	// 	printf("%s", line);
+	// 	free(line);
+	// 	line = NULL;
+	// }
+	system("leaks a.out");
 	close(fd);
 	return (0);
 }

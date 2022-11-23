@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:27:46 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/18 15:39:00 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/23 14:44:17 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@
 
 char	*get_next_line(int fd);
 char	*ft_read_file(int fd, char *buffer);
-char	*ft_read_check(char *buffer, char *read_char, int bytes);
+char	*ft_read_check(char **buffer, char *read_char, int bytes);
 char	*ft_find_line(char *buffer);
+void	ft_free_str(char **str);
 
 void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen_gnl(const char *s);
