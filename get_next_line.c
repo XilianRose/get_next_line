@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:19:29 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/23 15:57:05 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/24 16:30:59 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	ft_free_str(char **str)
 {
-	if (str != NULL && *str != '\0' && *str[0] != '\0')
+	if (str != NULL && *str != '\0')
 	{
 		free(*str);
 		*str = NULL;
@@ -50,7 +50,6 @@ char	*ft_read_check(char **buffer, char *read_char, int bytes)
 	temp = NULL;
 	if (bytes < 0)
 		return (ft_free_str(buffer), NULL);
-
 	if (bytes > 0)
 	{
 		temp = *buffer;
@@ -97,8 +96,11 @@ char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
+	char		*new_buffer;
+	size_t		len;
 
 	line = NULL;
+	new_buffer = NULL;
 	if (fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (ft_strchr_gnl(buffer, '\n') == NULL)
@@ -106,10 +108,13 @@ char	*get_next_line(int fd)
 	if (buffer)
 	{
 		if (buffer[0] == '\0')
-			return (NULL);
+			return (ft_free_str(&buffer), NULL);
 		line = ft_find_line(buffer);
-		//memmove ipv buffer pointer verplaatsen
-		buffer = (buffer + ft_strlen_gnl(line));
+		len = ft_strlen_gnl(buffer + ft_strlen_gnl(line));
+		new_buffer = ft_calloc(len + 1, sizeof(char));
+		ft_memcpy(new_buffer, buffer + ft_strlen_gnl(line), len);
+		ft_free_str(&buffer);
+		buffer = new_buffer;
 	}
 	return (line);
 }
@@ -121,38 +126,38 @@ char	*get_next_line(int fd)
 //		after this it calls on the get_next_line function with the given fd
 //		in a loop, printing it each time, untill error or EOF.
 
-#include <fcntl.h>
-#include <stdio.h>
+// #include <fcntl.h>
+// #include <stdio.h>
 
-int	main(int argc, char **argv)
-{
-	int		fd;
-	char	*line = "start";
+// int	main(int argc, char **argv)
+// {
+// 	int		fd;
+// 	char	*line = "start";
 
-	if (argc != 2)
-	{
-		printf("\nplease enter one filename as argument\n\n");
-		return (0);
-	}
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-	{
-		printf("\nencountered problem opening file\nfd = %i\n\n", fd);
-		return (fd);
-	}
-	line = get_next_line(fd);
-	free(line);
-	line = NULL;
-	line = get_next_line(fd);
-	free(line);
-	line = NULL;
-	// while ((line = get_next_line(fd)) > 0)
-	// {
-	// 	printf("%s", line);
-	// 	free(line);
-	// 	line = NULL;
-	// }
-	system("leaks a.out");
-	close(fd);
-	return (0);
-}
+// 	if (argc != 2)
+// 	{
+// 		printf("\nplease enter one filename as argument\n\n");
+// 		return (0);
+// 	}
+// 	fd = open(argv[1], O_RDONLY);
+// 	if (fd == -1)
+// 	{
+// 		printf("\nencountered problem opening file\nfd = %i\n\n", fd);
+// 		return (fd);
+// 	}
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = NULL;
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = NULL;
+// 	while ((line = get_next_line(fd)) > 0)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 		line = NULL;
+// 	}
+// 	system("leaks a.out");
+// 	close(fd);
+// 	return (0);
+// }
