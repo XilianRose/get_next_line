@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_next_line.c                                    :+:    :+:            */
+/*   get_next_line_bonus.c                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:19:29 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/25 12:14:50 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/11/25 12:14:43 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* Special thanks to Jelle van der Kooi (jelvan-d), Tessa vand er Loo  */
 /* (tevan-de) & Cosima Uechtritz (ceuchtri) for helping me fix my bugs <3 */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	ft_free_str(char **str)
 {
