@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/11 12:19:29 by mstegema      #+#    #+#                 */
-/*   Updated: 2022/11/25 12:14:43 by mstegema      ########   odam.nl         */
+/*   Updated: 2022/12/22 14:52:13 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	*ft_read_file(int fd, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[4096];
 	char		*line;
 	char		*new_buffer;
 	size_t		len;
@@ -104,21 +104,21 @@ char	*get_next_line(int fd)
 	line = NULL;
 	new_buffer = NULL;
 	if (fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
-		return (ft_free_str(&buffer), NULL);
-	if (ft_strchr_gnl(buffer, '\n') == NULL)
-		buffer = ft_read_file(fd, buffer);
-	if (buffer)
+		return (ft_free_str(&buffer[fd]), NULL);
+	if (ft_strchr_gnl(buffer[fd], '\n') == NULL)
+		buffer[fd] = ft_read_file(fd, buffer[fd]);
+	if (buffer[fd])
 	{
-		if (buffer[0] == '\0')
-			return (ft_free_str(&buffer), NULL);
-		line = ft_find_line(buffer);
-		len = ft_strlen_gnl(buffer + ft_strlen_gnl(line));
+		if (buffer[fd][0] == '\0')
+			return (ft_free_str(&buffer[fd]), NULL);
+		line = ft_find_line(buffer[fd]);
+		len = ft_strlen_gnl(buffer[fd] + ft_strlen_gnl(line));
 		new_buffer = ft_calloc(len + 1, sizeof(char));
 		if (!new_buffer)
-			return (ft_free_str(&buffer), NULL);
-		ft_memcpy(new_buffer, buffer + ft_strlen_gnl(line), len);
-		ft_free_str(&buffer);
-		buffer = new_buffer;
+			return (ft_free_str(&buffer[fd]), NULL);
+		ft_memcpy(new_buffer, buffer[fd] + ft_strlen_gnl(line), len);
+		ft_free_str(&buffer[fd]);
+		buffer[fd] = new_buffer;
 	}
 	return (line);
 }
